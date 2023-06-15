@@ -1,26 +1,40 @@
-import {useState} from 'react'
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
+
 import { type NextPage } from "next";
+import { signIn, signOut, useSession } from 'next-auth/react';
 import Head from "next/head";
+import {useState} from 'react'
 
 import {Input} from "~/component/input"
 import { FormGroup } from "~/component/FormGroup";
 import {Button} from "~/component/Button"
 
 import { api } from '~/utils/api';
-import { sign } from 'crypto';
-import { signIn, signOut, useSession } from 'next-auth/react';
+
 
 
 const GeneratePage: NextPage = () => {
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     prompt: "",
   });
 
+  const [imageUrl, setImagesUrl] = useState('');
+
   const generateIcon = api.generate.generateIcon.useMutation({
     onSuccess(data){
-      console.log("mutation finished", data);
-    }
-  })
+      console.log("mutation finished", data.imageUrl);
+      if(!data.imageUrl) return;
+      setImagesUrl(data.imageUrl)
+    },
+    onError(error) {
+      setError(error.message);
+    },
+  
+  });
+
+  
 
   function handleFormSubmit(e: React.FormEvent){
     e.preventDefault();
@@ -78,7 +92,9 @@ const GeneratePage: NextPage = () => {
               </Input>
             </FormGroup>
             <button className= "bg-blue-400 px-4 py-2 rounded hover:bg-blue-500">Submit</button>
-        </form>       
+        </form>
+
+        <img src={imageUrl}/>       
       </main>
     </>
   );
