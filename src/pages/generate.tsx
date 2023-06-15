@@ -1,9 +1,14 @@
 import {useState} from 'react'
 import { type NextPage } from "next";
 import Head from "next/head";
+
 import {Input} from "~/component/input"
 import { FormGroup } from "~/component/FormGroup";
+import {Button} from "~/component/Button"
+
 import { api } from '~/utils/api';
+import { sign } from 'crypto';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 
 const GeneratePage: NextPage = () => {
@@ -35,6 +40,10 @@ const GeneratePage: NextPage = () => {
     }
   }
 
+  const session = useSession();
+
+  const isLoggedIn = !!session.data;
+
   return (
     <>
       <Head>
@@ -43,6 +52,21 @@ const GeneratePage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
+        {!isLoggedIn && 
+        <Button onClick={()=> {
+          signIn().catch(console.error)
+          }}>
+            Login
+            </Button>
+          }
+          {isLoggedIn && 
+        <Button onClick={()=> {
+          signOut().catch(console.error)
+          }}>
+            Logout
+            </Button>
+          }
+          {session.data?.user.name}
         <form className="flex flex-col gap-4" 
         onSubmit={handleFormSubmit}
         >
