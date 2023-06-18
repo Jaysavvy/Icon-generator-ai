@@ -9,6 +9,7 @@ import {useState} from 'react'
 import {Input} from "~/component/input"
 import { FormGroup } from "~/component/FormGroup";
 import {Button} from "~/component/Button"
+import Image from 'next/image'
 
 import { api } from '~/utils/api';
 
@@ -42,6 +43,7 @@ const GeneratePage: NextPage = () => {
     generateIcon.mutate({
       prompt: form.prompt
     })
+    setForm({prompt: ""});
   }
 
  
@@ -94,7 +96,11 @@ const GeneratePage: NextPage = () => {
             <button className= "bg-blue-400 px-4 py-2 rounded hover:bg-blue-500">Submit</button>
         </form>
 
-        <img src={imageUrl}/>       
+        <img src={`data:image/png;base64, ${imageUrl}`}
+        alt= "an image of your generated prompt"
+        width="100"
+        height="100"
+        />       
       </main>
     </>
   );
