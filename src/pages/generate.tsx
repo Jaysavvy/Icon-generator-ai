@@ -12,10 +12,14 @@ import {Button} from "~/component/Button"
 import Image from 'next/image'
 
 import { api } from '~/utils/api';
+import { useBuyCredits } from "~/hooks/useBuyCredits";
 
 
 
 const GeneratePage: NextPage = () => {
+
+  const {buyCredits} = useBuyCredits();
+
   const [error, setError] = useState("");
   const [form, setForm] = useState({
     prompt: "",
@@ -75,13 +79,16 @@ const GeneratePage: NextPage = () => {
             Login
             </Button>
           }
-          {isLoggedIn && 
+          {isLoggedIn && ( 
+       <>    
+        <Button onClick ={()=> {buyCredits().catch(console.error)}}> Buy Credits </Button>    
         <Button onClick={()=> {
           signOut().catch(console.error)
           }}>
             Logout
             </Button>
-          }
+      </> 
+          )}
           {session.data?.user.name}
         <form className="flex flex-col gap-4" 
         onSubmit={handleFormSubmit}
