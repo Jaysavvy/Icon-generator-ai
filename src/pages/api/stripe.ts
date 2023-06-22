@@ -15,12 +15,14 @@ export const config = {
 };
 
 const webhook = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log("event", event)
+  
   if (req.method === "POST") {
     const buf = await buffer(req);
     const sig = req.headers["stripe-signature"] as string;
 
     let event;
+    
+    console.log("event", event)
 
     try {
       event = stripe.webhooks.constructEvent(
