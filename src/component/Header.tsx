@@ -14,10 +14,15 @@ export function Header(){
     <header className=" px-4 container mx-auto justify-between dark:bg-gray-800 flex h-16 items-center">
 
     <PrimaryLink href="/">Icon Generator</PrimaryLink>
-    <ul>
+    <ul className="flex gap-4">
         <li> 
         <PrimaryLink href='/generate'>Generate</PrimaryLink>
         </li>
+        {isLoggedIn && (
+             <li> 
+             <PrimaryLink href='/collection'>Collection</PrimaryLink>
+             </li>
+        )}
     </ul>
     <ul className="flex gap-4">
         {isLoggedIn && (
